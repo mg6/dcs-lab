@@ -65,6 +65,8 @@ namespace UnifiedAutomation.Sample
             this.label3 = new System.Windows.Forms.Label();
             this.lblConnectionState = new System.Windows.Forms.Label();
             this.UseDnsNameAndPortFromDiscoveryUrl = new System.Windows.Forms.CheckBox();
+            this.elementHost1 = new System.Windows.Forms.Integration.ElementHost();
+            this.assemblyStationControl1 = new UnifiedAutomation.Sample.AssemblyStationControl();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -176,11 +178,21 @@ namespace UnifiedAutomation.Sample
             this.UseDnsNameAndPortFromDiscoveryUrl.Text = "UseDiscoveryUrl";
             this.UseDnsNameAndPortFromDiscoveryUrl.UseVisualStyleBackColor = true;
             // 
+            // elementHost1
+            // 
+            this.elementHost1.Location = new System.Drawing.Point(5, 77);
+            this.elementHost1.Name = "elementHost1";
+            this.elementHost1.Size = new System.Drawing.Size(746, 100);
+            this.elementHost1.TabIndex = 27;
+            this.elementHost1.Text = "elementHost1";
+            this.elementHost1.Child = this.assemblyStationControl1;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(759, 236);
+            this.Controls.Add(this.elementHost1);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainForm";
@@ -202,5 +214,7 @@ namespace UnifiedAutomation.Sample
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label lblConnectionState;
         private System.Windows.Forms.CheckBox UseDnsNameAndPortFromDiscoveryUrl;
+        private System.Windows.Forms.Integration.ElementHost elementHost1;
+        private AssemblyStationControl assemblyStationControl1;
     }
 }
