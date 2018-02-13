@@ -124,8 +124,8 @@ namespace UnifiedAutomation.Sample
                         // update status label
                         lblConnectionState.Text = "Disconnected";
                         // update buttons
-                        btnConnect.Text = "Connect";
-                        btnMonitor.Text = "Monitor";
+                        //btnConnect.Text = "Connect";
+                        //btnMonitor.Text = "Monitor";
                         break;
                     case ServerConnectionStatus.Connected:
                         m_bConnected = true;
@@ -170,11 +170,11 @@ namespace UnifiedAutomation.Sample
                 txtNamespaceUri.Enabled = !m_bConnected;
 
                 // Toggle action buttons
-                btnMonitor.Enabled = allowEditing;
-                btnRead.Enabled = allowEditing;
-                btnReadAsync.Enabled = allowEditing;
-                btnWrite.Enabled = allowEditing;
-                btnWriteAsync.Enabled = allowEditing;
+                //btnMonitor.Enabled = allowEditing;
+                //btnRead.Enabled = allowEditing;
+                //btnReadAsync.Enabled = allowEditing;
+                //btnWrite.Enabled = allowEditing;
+                //btnWriteAsync.Enabled = allowEditing;
             }
         }
         #endregion
@@ -194,16 +194,16 @@ namespace UnifiedAutomation.Sample
             // - the identifier text in the text box
             // - the namespace index collected during the server connect
             ReadValueIdCollection nodesToRead = new ReadValueIdCollection();
-            nodesToRead.Add(new ReadValueId()
-            {
-                NodeId = new NodeId(txtIdentifier1.Text, m_NameSpaceIndex),
-                AttributeId = Attributes.Value
-            });
-            nodesToRead.Add(new ReadValueId()
-            {
-                NodeId = new NodeId(txtIdentifier2.Text, m_NameSpaceIndex),
-                AttributeId = Attributes.Value
-            });
+            //nodesToRead.Add(new ReadValueId()
+            //{
+            //    NodeId = new NodeId(txtIdentifier1.Text, m_NameSpaceIndex),
+            //    AttributeId = Attributes.Value
+            //});
+            //nodesToRead.Add(new ReadValueId()
+            //{
+            //    NodeId = new NodeId(txtIdentifier2.Text, m_NameSpaceIndex),
+            //    AttributeId = Attributes.Value
+            //});
 
 
             // Step 2 --------------------------------------------------
@@ -217,27 +217,27 @@ namespace UnifiedAutomation.Sample
             if (StatusCode.IsGood(results[0].StatusCode))
             {
                 // The node succeeded - print the value as string
-                txtRead1.Text = results[0].WrappedValue.ToString();
-                txtRead1.BackColor = Color.White;
+                //txtRead1.Text = results[0].WrappedValue.ToString();
+                //txtRead1.BackColor = Color.White;
             }
             else
             {
                 // The node failed - print the symbolic name of the status code
-                txtRead1.Text = results[0].StatusCode.ToString();
-                txtRead1.BackColor = Color.Red;
+                //txtRead1.Text = results[0].StatusCode.ToString();
+                //txtRead1.BackColor = Color.Red;
             }
             // Print result for second variable - check first the result code
             if (StatusCode.IsGood(results[1].StatusCode))
             {
                 // The node succeeded - print the value as string
-                txtRead2.Text = results[1].WrappedValue.ToString();
-                txtRead2.BackColor = Color.White;
+                //txtRead2.Text = results[1].WrappedValue.ToString();
+                //txtRead2.BackColor = Color.White;
             }
             else
             {
                 // The node failed - print the symbolic name of the status code
-                txtRead2.Text = results[1].StatusCode.ToString();
-                txtRead2.BackColor = Color.Red;
+                //txtRead2.Text = results[1].StatusCode.ToString();
+                //txtRead2.BackColor = Color.Red;
             }
         }
 
@@ -258,26 +258,26 @@ namespace UnifiedAutomation.Sample
 
             // Get values from GUI and convert them to the right data type
             DataValue val1 = new DataValue();
-            val1.Value = TypeUtils.Cast(txtWrite1.Text, m_TypeItem1);
+            //val1.Value = TypeUtils.Cast(txtWrite1.Text, m_TypeItem1);
             DataValue val2 = new DataValue();
-            val2.Value = TypeUtils.Cast(txtWrite2.Text, m_TypeItem2);
+            //val2.Value = TypeUtils.Cast(txtWrite2.Text, m_TypeItem2);
 
 
             // Step 2 --------------------------------------------------
             // Prepare nodes to write including the values to write
             List<WriteValue> nodesToWrite = new List<WriteValue>();
-            nodesToWrite.Add(new WriteValue()
-            {
-                NodeId = new NodeId(txtIdentifier1.Text, m_NameSpaceIndex),
-                AttributeId = Attributes.Value,
-                Value = val1
-            });
-            nodesToWrite.Add(new WriteValue()
-            {
-                NodeId = new NodeId(txtIdentifier2.Text, m_NameSpaceIndex),
-                AttributeId = Attributes.Value,
-                Value = val2
-            });
+            //nodesToWrite.Add(new WriteValue()
+            //{
+            //    NodeId = new NodeId(txtIdentifier1.Text, m_NameSpaceIndex),
+            //    AttributeId = Attributes.Value,
+            //    Value = val1
+            //});
+            //nodesToWrite.Add(new WriteValue()
+            //{
+            //    NodeId = new NodeId(txtIdentifier2.Text, m_NameSpaceIndex),
+            //    AttributeId = Attributes.Value,
+            //    Value = val2
+            //});
 
 
             // Step 3 --------------------------------------------------
@@ -291,25 +291,25 @@ namespace UnifiedAutomation.Sample
             if (StatusCode.IsGood(results[0]))
             {
                 // write succeeded - reset background color
-                txtWrite1.BackColor = Color.White;
+                //txtWrite1.BackColor = Color.White;
             }
             else
             {
                 // write failed - print the symbolic name of the status code
-                txtWrite1.Text = results[0].ToString();
-                txtWrite1.BackColor = Color.Red;
+                //txtWrite1.Text = results[0].ToString();
+                //txtWrite1.BackColor = Color.Red;
             }
 
             if (StatusCode.IsGood(results[1]))
             {
                 // write succeeded - reset background color
-                txtWrite2.BackColor = Color.White;
+                //txtWrite2.BackColor = Color.White;
             }
             else
             {
                 // write failed - print the symbolic name of the status code
-                txtWrite2.Text = results[1].ToString();
-                txtWrite2.BackColor = Color.Red;
+                //txtWrite2.Text = results[1].ToString();
+                //txtWrite2.BackColor = Color.Red;
             }
         }
         #endregion
@@ -337,8 +337,8 @@ namespace UnifiedAutomation.Sample
             List<MonitoredItem> monitoredItems = new List<MonitoredItem>();
             // The corresponding result text box gets assigned as user data
             // Default is monitoring Value attributes
-            monitoredItems.Add(new DataMonitoredItem(new NodeId(txtIdentifier1.Text, m_NameSpaceIndex)) { UserData = txtMonitored1 });
-            monitoredItems.Add(new DataMonitoredItem(new NodeId(txtIdentifier2.Text, m_NameSpaceIndex)) { UserData = txtMonitored2 });
+            //monitoredItems.Add(new DataMonitoredItem(new NodeId(txtIdentifier1.Text, m_NameSpaceIndex)) { UserData = txtMonitored1 });
+            //monitoredItems.Add(new DataMonitoredItem(new NodeId(txtIdentifier2.Text, m_NameSpaceIndex)) { UserData = txtMonitored2 });
 
 
             // Step 3 --------------------------------------------------
@@ -447,21 +447,21 @@ namespace UnifiedAutomation.Sample
             // - the identifier text in the text box
             // - the namespace index collected during the server connect
             ReadValueIdCollection nodesToRead = new ReadValueIdCollection();
-            nodesToRead.Add(new ReadValueId()
-            {
-                NodeId = new NodeId(txtIdentifier1.Text, m_NameSpaceIndex),
-                AttributeId = Attributes.Value
-            });
-            nodesToRead.Add(new ReadValueId()
-            {
-                NodeId = new NodeId(txtIdentifier2.Text, m_NameSpaceIndex),
-                AttributeId = Attributes.Value
-            });
+            //nodesToRead.Add(new ReadValueId()
+            //{
+            //    NodeId = new NodeId(txtIdentifier1.Text, m_NameSpaceIndex),
+            //    AttributeId = Attributes.Value
+            //});
+            //nodesToRead.Add(new ReadValueId()
+            //{
+            //    NodeId = new NodeId(txtIdentifier2.Text, m_NameSpaceIndex),
+            //    AttributeId = Attributes.Value
+            //});
 
             // use list of objects as user data - add the text fields
             List<object> lstObjects = new List<object>();
-            lstObjects.Add(txtRead1);
-            lstObjects.Add(txtRead2);
+            //lstObjects.Add(txtRead1);
+            //lstObjects.Add(txtRead2);
 
 
             // Step 2 --------------------------------------------------
@@ -553,31 +553,31 @@ namespace UnifiedAutomation.Sample
 
             // Get values from GUI and convert them to the right data type
             DataValue val1 = new DataValue();
-            val1.Value = TypeUtils.Cast(txtWrite1.Text, m_TypeItem1);
+            //val1.Value = TypeUtils.Cast(txtWrite1.Text, m_TypeItem1);
             DataValue val2 = new DataValue();
-            val2.Value = TypeUtils.Cast(txtWrite2.Text, m_TypeItem2);
+            //val2.Value = TypeUtils.Cast(txtWrite2.Text, m_TypeItem2);
 
 
             // Step 2 --------------------------------------------------
             // Prepare nodes to write including the values to write
             List<WriteValue> nodesToWrite = new List<WriteValue>();
-            nodesToWrite.Add(new WriteValue()
-            {
-                NodeId = new NodeId(txtIdentifier1.Text, m_NameSpaceIndex),
-                AttributeId = Attributes.Value,
-                Value = val1
-            });
-            nodesToWrite.Add(new WriteValue()
-            {
-                NodeId = new NodeId(txtIdentifier2.Text, m_NameSpaceIndex),
-                AttributeId = Attributes.Value,
-                Value = val2
-            });
+            //nodesToWrite.Add(new WriteValue()
+            //{
+            //    NodeId = new NodeId(txtIdentifier1.Text, m_NameSpaceIndex),
+            //    AttributeId = Attributes.Value,
+            //    Value = val1
+            //});
+            //nodesToWrite.Add(new WriteValue()
+            //{
+            //    NodeId = new NodeId(txtIdentifier2.Text, m_NameSpaceIndex),
+            //    AttributeId = Attributes.Value,
+            //    Value = val2
+            //});
 
             // use list of objects as user data - add the text fields
             List<object> lstObjects = new List<object>();
-            lstObjects.Add(txtRead2);
-            lstObjects.Add(txtRead1);
+            //lstObjects.Add(txtRead2);
+            //lstObjects.Add(txtRead1);
 
 
             // Step 3 --------------------------------------------------
@@ -656,16 +656,16 @@ namespace UnifiedAutomation.Sample
             // - the identifier text in the text box
             // - the namespace index collected during the server connect
             ReadValueIdCollection nodesToRead = new ReadValueIdCollection();
-            nodesToRead.Add(new ReadValueId()
-            {
-                NodeId = new NodeId(txtIdentifier1.Text, m_NameSpaceIndex),
-                AttributeId = Attributes.DataType
-            });
-            nodesToRead.Add(new ReadValueId()
-            {
-                NodeId = new NodeId(txtIdentifier2.Text, m_NameSpaceIndex),
-                AttributeId = Attributes.DataType
-            });
+            //nodesToRead.Add(new ReadValueId()
+            //{
+            //    NodeId = new NodeId(txtIdentifier1.Text, m_NameSpaceIndex),
+            //    AttributeId = Attributes.DataType
+            //});
+            //nodesToRead.Add(new ReadValueId()
+            //{
+            //    NodeId = new NodeId(txtIdentifier2.Text, m_NameSpaceIndex),
+            //    AttributeId = Attributes.DataType
+            //});
 
             // Read the datatypes
             List<DataValue> results = null;
@@ -682,7 +682,7 @@ namespace UnifiedAutomation.Sample
                 }
                 else
                 {
-                    throw new Exception("Read datatype failed for item " + txtIdentifier1.Text);
+                    //throw new Exception("Read datatype failed for item " + txtIdentifier1.Text);
                 }
 
                 // check the result code
@@ -693,7 +693,7 @@ namespace UnifiedAutomation.Sample
                 }
                 else
                 {
-                    throw new Exception("Read datatype failed for item " + txtIdentifier1.Text);
+                    //throw new Exception("Read datatype failed for item " + txtIdentifier1.Text);
                 }
             }
             catch (Exception exception)
@@ -826,14 +826,14 @@ namespace UnifiedAutomation.Sample
                 {
                     startMonitoring();
 
-                    btnMonitor.Text = "Stop";
+                    //btnMonitor.Text = "Stop";
                 }
                 catch (Exception exception)
                 {
                     ExceptionDlg.Show("Create subscription failed", exception);
 
                     m_subscription = null;
-                    btnMonitor.Text = "Monitor";
+                    //btnMonitor.Text = "Monitor";
                 }
             }
             else
@@ -842,9 +842,9 @@ namespace UnifiedAutomation.Sample
                 {
                     stopMonitoring();
 
-                    btnMonitor.Text = "Monitor";
-                    txtMonitored1.Text = "";
-                    txtMonitored2.Text = "";
+                    //btnMonitor.Text = "Monitor";
+                    //txtMonitored1.Text = "";
+                    //txtMonitored2.Text = "";
                 }
                 catch (Exception exception)
                 {
