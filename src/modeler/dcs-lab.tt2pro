@@ -1,0 +1,32 @@
+###########################
+# UaModeler Project File  #
+# Generated at 13.02.2018 #
+###########################
+
+PROJECTNAME = dcs-lab
+
+TEMPLATESET = ($TEMPLATES)/net/v2_5/t3/net_server.tt2set
+
+MODELS += ($MODELS)/Opc.Ua.NodeSet2.ua \
+    dcs-lab.ua
+
+VARIABLES+= dcs-lab.ua: Namespace=DcsLab; Organization=Polsl; 
+
+COLORS = ($MODELS)/Opc.Ua.NodeSet2.ua: #0000ff\
+    dcs-lab.ua: #008000
+
+PROJECTVARIABLES += GenerateDefaultApplication = true \
+    NetFramework = 4.6.1 \
+    ProjectNamespace = DcsLab \
+    ProjectOrganization = Polsl
+
+OUTPUTPATH = ../server
+
+GENERATE += dcs-lab.ua
+
+NODEACCESSINFOROLES += Administrator \
+    SecurityAdmin \
+    ConfigurationAdmin \
+    Operator \
+    Observer
+
