@@ -89,6 +89,8 @@ namespace Polsl.DcsLab
                 Console.WriteLine("Loading the DcsLab Model.");
                 ImportUaNodeset(Assembly.GetEntryAssembly(), "dcs-lab.xml");
 
+                var controllers = LookupObject(ObjectIds.Controllers);
+                var station = CreateAssemblyStation("UA2_1_2", controllers);
             }
             catch (Exception e)
             {
@@ -113,6 +115,24 @@ namespace Polsl.DcsLab
             }
         }
         #endregion
+
+        public ObjectNode LookupObject(ExpandedNodeId nodeId)
+        {
+            return (ObjectNode)FindInMemoryNode(new NodeId((uint)nodeId.Identifier, DefaultNamespaceIndex));
+        }
+
+        public ObjectNode CreateAssemblyStation(string name, ObjectNode parent)
+        {
+            var settings = new CreateObjectSettings()
+            {
+                ParentNodeId = parent.NodeId,
+                ReferenceTypeId = UnifiedAutomation.UaBase.ReferenceTypeIds.Organizes,
+                RequestedNodeId = new NodeId(name, DefaultNamespaceIndex),
+                BrowseName = new QualifiedName(name, DefaultNamespaceIndex),
+                TypeDefinitionId = new NodeId(Polsl.DcsLab.ObjectTypes.AssemblyStationType, DefaultNamespaceIndex),
+            };
+            return CreateObject(Server.DefaultRequestContext, settings);
+        }
 
         #region Private Methods
         #endregion
