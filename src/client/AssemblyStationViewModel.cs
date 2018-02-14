@@ -11,11 +11,11 @@ namespace UnifiedAutomation.Sample
         private bool _stInput;
         private bool _stOutput;
 
-        private int _currentCycleTime;
-        private int _totalCycleTime;
-        private int _timeoutSec;
+        private int _currentCycleTime = 0;
+        private int _totalCycleTime = 30;
+        private int _timeoutSec = 60;
 
-        private bool _empty;
+        private bool _empty = true;
         private bool _run;
         private bool _blocked;
         private bool _alarm;
