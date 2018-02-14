@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnifiedAutomation.UaBase;
 
 namespace UnifiedAutomation.Sample
 {
@@ -21,6 +22,14 @@ namespace UnifiedAutomation.Sample
         private bool _alarm;
         private bool _excluded;
         private bool _timeout;
+
+        public ObjectNode Parent;
+        public System.Threading.Timer Timer;
+
+        public AssemblyStationViewModel(ObjectNode parent)
+        {
+            Parent = parent;
+        }
 
         public bool StInput
         {

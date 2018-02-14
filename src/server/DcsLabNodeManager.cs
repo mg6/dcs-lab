@@ -47,6 +47,8 @@ using System.IO;
 using System.Reflection;
 using UnifiedAutomation.UaBase;
 using UnifiedAutomation.UaServer;
+using UnifiedAutomation.Sample;
+
 namespace Polsl.DcsLab
 {
     internal partial class DcsLabNodeManager : BaseNodeManager
@@ -124,7 +126,7 @@ namespace Polsl.DcsLab
             return (ObjectNode)FindInMemoryNode(new NodeId((uint)nodeId.Identifier, DefaultNamespaceIndex));
         }
 
-        public ObjectNode CreateAssemblyStation(string name, ObjectNode parent)
+        public AssemblyStationViewModel CreateAssemblyStation(string name, ObjectNode parent)
         {
             var settings = new CreateObjectSettings()
             {
@@ -134,7 +136,63 @@ namespace Polsl.DcsLab
                 BrowseName = new QualifiedName(name, DefaultNamespaceIndex),
                 TypeDefinitionId = new NodeId(Polsl.DcsLab.ObjectTypes.AssemblyStationType, DefaultNamespaceIndex),
             };
-            return CreateObject(Server.DefaultRequestContext, settings);
+
+            var node = CreateObject(Server.DefaultRequestContext, settings);
+
+            var vm = new AssemblyStationViewModel(node);
+            var getters = getGetters(vm);
+            var setters = getSetters(vm);
+
+            foreach (var variable in variables) {
+                SetVariableConfiguration(
+                    node.NodeId, new QualifiedName(variable, DefaultNamespaceIndex),
+                    NodeHandleType.ExternalPolled,
+                    new Tuple<Func<object>, Action<object>>(getters[variable], setters[variable]));
+            }
+            return vm;
+        }
+
+        private readonly string[] variables = new string[]
+        {
+            "ST_INPUT",
+            "ST_OUTPUT",
+            "CYCLE_TIME",
+            "ALARM",
+            "BLOCKED",
+            "EMPTY",
+            "EXCLUDED",
+            "RUN",
+            "TIMEOUT",
+        };
+
+        private Dictionary<string, Action<object>> getSetters(AssemblyStationViewModel station)
+        {
+            return new Dictionary<string, Action<object>>(){
+                {"ST_INPUT", v => station.StInput = (bool)v},
+                {"ST_OUTPUT", v => station.StOutput = (bool)v},
+                {"CYCLE_TIME", v => station.CurrentCycleTime = (byte)v},
+                {"ALARM", v => station.Alarm = (bool)v},
+                {"BLOCKED", v => station.Blocked = (bool)v},
+                {"EMPTY", v => station.Empty = (bool)v},
+                {"EXCLUDED", v => station.Excluded = (bool)v},
+                {"RUN", v => station.Run = (bool)v},
+                {"TIMEOUT", v => station.Timeout = (bool)v},
+            };
+        }
+
+        private Dictionary<string, Func<object>> getGetters(AssemblyStationViewModel station)
+        {
+            return new Dictionary<string, Func<object>>(){
+                {"ST_INPUT", () => station.StInput},
+                {"ST_OUTPUT", () => station.StOutput},
+                {"CYCLE_TIME", () => station.CurrentCycleTime},
+                {"ALARM", () => station.Alarm},
+                {"BLOCKED", () => station.Blocked},
+                {"EMPTY", () => station.Empty},
+                {"EXCLUDED", () => station.Excluded},
+                {"RUN", () => station.Run},
+                {"TIMEOUT", () => station.Timeout},
+            };
         }
 
         #region Private Methods
