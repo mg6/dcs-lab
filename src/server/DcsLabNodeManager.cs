@@ -90,7 +90,10 @@ namespace Polsl.DcsLab
                 ImportUaNodeset(Assembly.GetEntryAssembly(), "dcs-lab.xml");
 
                 var controllers = LookupObject(ObjectIds.Controllers);
-                var station = CreateAssemblyStation("UA2_1_2", controllers);
+
+                var station1 = CreateAssemblyStation("AS1_1_2",  controllers);
+                var station2 = CreateAssemblyStation("AS21_1_2", controllers);
+                var station3 = CreateAssemblyStation("AS2_1_2",  controllers);
             }
             catch (Exception e)
             {
