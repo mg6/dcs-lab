@@ -135,6 +135,7 @@ namespace UnifiedAutomation.Sample
                         lblConnectionState.Text = "Connected";
                         // update buttons
                         btnConnect.Text = "Disconnect";
+                        startMonitoring();
                         break;
                     case ServerConnectionStatus.ConnectionWarningWatchdogTimeout:
                         // update status label
@@ -340,6 +341,11 @@ namespace UnifiedAutomation.Sample
             // Default is monitoring Value attributes
             //monitoredItems.Add(new DataMonitoredItem(new NodeId(txtIdentifier1.Text, m_NameSpaceIndex)) { UserData = txtMonitored1 });
             //monitoredItems.Add(new DataMonitoredItem(new NodeId(txtIdentifier2.Text, m_NameSpaceIndex)) { UserData = txtMonitored2 });
+            foreach (var accessor in allowedVars.Values)
+            {
+                var name = accessor.Label;
+                monitoredItems.Add(new DataMonitoredItem(new NodeId($"{prefix}.{name}", m_NameSpaceIndex)) { UserData = accessor });
+            }
 
 
             // Step 3 --------------------------------------------------
@@ -394,6 +400,9 @@ namespace UnifiedAutomation.Sample
                 return;
             }
 
+            var asControl = elementHost1.Child as AssemblyStationControl;
+            var asViewModel = asControl.DataContext as AssemblyStationViewModel;
+
             try
             {
                 // Check that the subscription has not changed.
@@ -404,25 +413,31 @@ namespace UnifiedAutomation.Sample
 
                 foreach (DataChange change in e.DataChanges)
                 {
-                    // Get text box for displaying value from user data
-                    TextBox textBox = change.MonitoredItem.UserData as TextBox;
+                    var accessor = change.MonitoredItem.UserData as Accessor;
+                    if (accessor.Label == "CYCLE_TIME")
+                        accessor.Setter(asViewModel, change.Value.GetValue<byte>(0));
+                    else
+                        accessor.Setter(asViewModel, change.Value.GetValue<bool>(false));
 
-                    if (textBox != null)
-                    {
-                        // Print result for variable - check first the result code
-                        if (StatusCode.IsGood(change.Value.StatusCode))
-                        {
-                            // The node succeeded - print the value as string
-                            textBox.Text = change.Value.WrappedValue.ToString();
-                            textBox.BackColor = Color.White;
-                        }
-                        else
-                        {
-                            // The node failed - print the symbolic name of the status code
-                            textBox.Text = change.Value.StatusCode.ToString();
-                            textBox.BackColor = Color.Red;
-                        }
-                    }
+                    // Get text box for displaying value from user data
+                    //TextBox textBox = change.MonitoredItem.UserData as TextBox;
+
+                    //if (textBox != null)
+                    //{
+                    //    // Print result for variable - check first the result code
+                    //    if (StatusCode.IsGood(change.Value.StatusCode))
+                    //    {
+                    //        // The node succeeded - print the value as string
+                    //        textBox.Text = change.Value.WrappedValue.ToString();
+                    //        textBox.BackColor = Color.White;
+                    //    }
+                    //    else
+                    //    {
+                    //        // The node failed - print the symbolic name of the status code
+                    //        textBox.Text = change.Value.StatusCode.ToString();
+                    //        textBox.BackColor = Color.Red;
+                    //    }
+                    //}
                 }
             }
             catch (Exception exception)
