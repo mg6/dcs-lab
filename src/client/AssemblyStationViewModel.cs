@@ -153,5 +153,51 @@ namespace UnifiedAutomation.Sample
                 RaisePropertyChanged("Timeout");
             }
         }
+
+        public void Tick()
+        {
+            if (Alarm || Excluded || Timeout)
+                return;
+
+            if (Empty)
+            {
+                if (StInput)
+                {
+                    Empty = false;
+                    Run = true;
+                }
+            }
+            else if (Run)
+            {
+                ++CurrentCycleTime;
+                if (CurrentCycleTime >= TimeoutSec)
+                {
+                    Run = false;
+                    Timeout = true;
+                }
+                else if (CurrentCycleTime >= TotalCycleTime)
+                {
+                    Run = false;
+                    if (!StOutput)
+                    {
+                        CurrentCycleTime = 0;
+                        StOutput = true;
+                        Empty = true;
+                    }
+                    else
+                    {
+                        Blocked = true;
+                    }
+                }
+            }
+            else if (Blocked)
+            {
+                if (!StOutput)
+                {
+                    Blocked = false;
+                    Run = true;
+                }
+            }
+        }
     }
 }
