@@ -11,9 +11,9 @@ namespace UnifiedAutomation.Sample
         private bool _stInput;
         private bool _stOutput;
 
-        private int _currentCycleTime = 0;
-        private int _totalCycleTime = 30;
-        private int _timeoutSec = 60;
+        private byte _currentCycleTime = 0;
+        private byte _totalCycleTime = 30;
+        private byte _timeoutSec = 60;
 
         private bool _empty = true;
         private bool _run;
@@ -46,7 +46,7 @@ namespace UnifiedAutomation.Sample
             }
         }
 
-        public int CurrentCycleTime
+        public byte CurrentCycleTime
         {
             get { return _currentCycleTime; }
 
@@ -58,7 +58,7 @@ namespace UnifiedAutomation.Sample
             }
         }
 
-        public int TotalCycleTime
+        public byte TotalCycleTime
         {
             get { return _totalCycleTime; }
 
@@ -70,7 +70,7 @@ namespace UnifiedAutomation.Sample
             }
         }
 
-        public int TimeoutSec
+        public byte TimeoutSec
         {
             get { return _timeoutSec; }
 
