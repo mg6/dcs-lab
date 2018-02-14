@@ -169,6 +169,9 @@ namespace UnifiedAutomation.Sample
             }
             else if (Run)
             {
+                if (!StInput)
+                    return;
+
                 ++CurrentCycleTime;
                 if (CurrentCycleTime >= TimeoutSec)
                 {
@@ -177,6 +180,7 @@ namespace UnifiedAutomation.Sample
                 }
                 else if (CurrentCycleTime >= TotalCycleTime)
                 {
+                    StInput = false;
                     Run = false;
                     if (!StOutput)
                     {
