@@ -32,6 +32,7 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using System.Windows.Threading;
 using UnifiedAutomation.UaBase;
 using UnifiedAutomation.UaClient;
 
@@ -853,5 +854,20 @@ namespace UnifiedAutomation.Sample
             }
         }
         #endregion
+
+        private System.Threading.Timer timer;
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            timer = new System.Threading.Timer((callback) =>
+            {
+                BeginInvoke(new Action(() =>
+                {
+                    var asControl = elementHost1.Child as AssemblyStationControl;
+                    var asViewModel = asControl.DataContext as AssemblyStationViewModel;
+                    asViewModel.Tick();
+                }));
+            }, null, 1000, 1000);
+        }
     }
 }
