@@ -104,6 +104,92 @@ namespace Polsl.DcsLab
         }
 
         /// <summary>
+        /// Reads the attributes.
+        /// </summary>
+        protected override void Read(
+            RequestContext context,
+            TransactionHandle transaction,
+            IList<NodeAttributeOperationHandle> operationHandles,
+            IList<ReadValueId> settings)
+        {
+            for (int ii = 0; ii < operationHandles.Count; ii++)
+            {
+                DataValue dv = null;
+
+                // the data passed to CreateVariable is returned as the UserData in the handle.
+                if (operationHandles[ii].NodeHandle.UserData is Tuple<Func<object>, Action<object>> accessors)
+                {
+                    var getter = accessors.Item1;
+
+                    dv = new DataValue(new Variant(getter(), null), DateTime.UtcNow);
+
+                    // apply any index range or encoding.
+                    if (!string.IsNullOrEmpty(settings[ii].IndexRange) || !QualifiedName.IsNull(settings[ii].DataEncoding))
+                    {
+                        dv = ApplyIndexRangeAndEncoding(
+                            operationHandles[ii].NodeHandle,
+                            dv,
+                            settings[ii].IndexRange,
+                            settings[ii].DataEncoding);
+                    }
+                }
+
+                // set an error if not found.
+                if (dv == null)
+                {
+                    dv = new DataValue(new StatusCode(StatusCodes.BadNodeIdUnknown));
+                }
+
+                // return the data to the caller.
+                ((ReadCompleteEventHandler)transaction.Callback)(
+                    operationHandles[ii],
+                    transaction.CallbackData,
+                    dv,
+                    false);
+            }
+        }
+
+        /// <summary>
+        /// Write the attributes
+        /// </summary>
+        protected override void Write(
+            RequestContext context,
+            TransactionHandle transaction,
+            IList<NodeAttributeOperationHandle> operationHandles,
+            IList<WriteValue> settings)
+        {
+            for (int ii = 0; ii < operationHandles.Count; ii++)
+            {
+                StatusCode error = StatusCodes.Good;
+
+                // the data passed to CreateVariable is returned as the UserData in the handle.
+
+                if (operationHandles[ii].NodeHandle.UserData is Tuple<Func<object>, Action<object>> accessors)
+                {
+                    if (!string.IsNullOrEmpty(settings[ii].IndexRange))
+                    {
+                        error = StatusCodes.BadIndexRangeInvalid;
+                    }
+
+                    var setter = accessors.Item2;
+
+                    setter(settings[ii].Value.Value);
+                }
+                else
+                {
+                    error = StatusCodes.BadNodeIdUnknown;
+                }
+
+                // return the data to the caller.
+                ((WriteCompleteEventHandler)transaction.Callback)(
+                    operationHandles[ii],
+                    transaction.CallbackData,
+                    error,
+                    false);
+            }
+        }
+
+        /// <summary>
         /// Called when the node manager is stopped.
         /// </summary>
         public override void Shutdown()
