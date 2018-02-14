@@ -31,6 +31,11 @@ namespace UnifiedAutomation.Sample
             Parent = parent;
         }
 
+        public void Start()
+        {
+            Timer = new System.Threading.Timer((callback) => Tick(), null, 1000, 1000);
+        }
+
         public bool StInput
         {
             get { return _stInput; }

@@ -93,9 +93,15 @@ namespace Polsl.DcsLab
 
                 var controllers = LookupObject(ObjectIds.Controllers);
 
-                var station1 = CreateAssemblyStation("AS1_1_2",  controllers);
-                var station2 = CreateAssemblyStation("AS21_1_2", controllers);
-                var station3 = CreateAssemblyStation("AS2_1_2",  controllers);
+                Vms = new AssemblyStationViewModel[]
+                {
+                    CreateAssemblyStation("AS1_1_2",  controllers),
+                    CreateAssemblyStation("AS21_1_2", controllers),
+                    CreateAssemblyStation("AS2_1_2",  controllers),
+                };
+
+                foreach (var vm in Vms)
+                    vm.Start();
             }
             catch (Exception e)
             {
@@ -285,6 +291,7 @@ namespace Polsl.DcsLab
         #endregion
 
         #region Private Fields
+        private AssemblyStationViewModel[] Vms;
         #endregion
     }
 }
