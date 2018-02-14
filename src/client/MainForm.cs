@@ -857,17 +857,142 @@ namespace UnifiedAutomation.Sample
 
         private System.Threading.Timer timer;
 
+        public class Accessor
+        {
+            public String Label;
+            public Action<AssemblyStationViewModel, object> Setter;
+            public Func<AssemblyStationViewModel, object> Getter;
+        }
+
+        private string prefix = "UA2_1_2";
+
+        private Dictionary<String, Accessor> allowedVars = new Dictionary<String, Accessor>()
+        {
+            {
+                "StInput",
+                new Accessor() {
+                    Label = "ST_INPUT",
+                    Getter = (vm) => vm.StInput,
+                    Setter = (vm, val) => vm.StInput = (bool)val
+                }
+            },
+            {
+                "StOutput",
+                new Accessor() {
+                    Label = "ST_OUTPUT",
+                    Getter = (vm) => vm.StOutput,
+                    Setter = (vm, val) => vm.StOutput = (bool)val
+                }
+            },
+            {
+                "CurrentCycleTime",
+                new Accessor() {
+                    Label = "CYCLE_TIME",
+                    Getter = (vm) => vm.CurrentCycleTime,
+                    Setter = (vm, val) => vm.CurrentCycleTime= (byte)val
+                }
+            },
+            {
+                "Empty",
+                new Accessor() {
+                    Label = "EMPTY",
+                    Getter = (vm) => vm.Empty,
+                    Setter = (vm, val) => vm.Empty = (bool)val
+                }
+            },
+            {
+                "Run",
+                new Accessor() {
+                    Label = "RUN",
+                    Getter = (vm) => vm.Run,
+                    Setter = (vm, val) => vm.Run = (bool)val
+                }
+            },
+            {
+                "Blocked",
+                new Accessor() {
+                    Label = "BLOCKED",
+                    Getter = (vm) => vm.Blocked,
+                    Setter = (vm, val) => vm.Blocked = (bool)val
+                }
+            },
+            {
+                "Alarm",
+                 new Accessor() {
+                     Label = "ALARM",
+                     Getter = (vm) => vm.Alarm,
+                     Setter = (vm, val) => vm.Alarm = (bool)val
+                 }
+            },
+            {
+                "Excluded",
+                new Accessor() {
+                    Label = "EXCLUDED",
+                    Getter = (vm) => vm.Excluded,
+                    Setter = (vm, val) => vm.Excluded = (bool)val
+                }
+            },
+            {
+                "Timeout",
+                new Accessor() {
+                    Label = "TIMEOUT",
+                    Getter = (vm) => vm.Timeout,
+                    Setter = (vm, val) => vm.Timeout = (bool)val
+                }
+
+            },
+        };
+
         private void MainForm_Load(object sender, EventArgs e)
         {
+            var asControl = elementHost1.Child as AssemblyStationControl;
+            var asViewModel = asControl.DataContext as AssemblyStationViewModel;
+
+            asViewModel.PropertyChanged += (object _sender, PropertyChangedEventArgs _e) =>
+            {
+                if (allowedVars.TryGetValue(_e.PropertyName, out var accessor))
+                {
+                    var val = accessor.Getter(asViewModel);
+                    if (val is bool)
+                        writeSync($"{prefix}.{accessor.Label}", (bool)val);
+                    else
+                        writeSync($"{prefix}.{accessor.Label}", (byte)val);
+                }
+            };
+
             timer = new System.Threading.Timer((callback) =>
             {
                 BeginInvoke(new Action(() =>
                 {
-                    var asControl = elementHost1.Child as AssemblyStationControl;
-                    var asViewModel = asControl.DataContext as AssemblyStationViewModel;
                     asViewModel.Tick();
                 }));
             }, null, 1000, 1000);
+        }
+
+        public void writeSync(string id, bool val)
+        {
+            List<StatusCode> results = m_session.Write(new List<WriteValue>()
+            {
+                new WriteValue()
+                {
+                    NodeId = new NodeId(id, m_NameSpaceIndex),
+                    AttributeId = Attributes.Value,
+                    Value = new DataValue { Value = TypeUtils.Cast(val, BuiltInType.Boolean) },
+                }
+            });
+        }
+
+        public void writeSync(string id, byte val)
+        {
+            List<StatusCode> results = m_session.Write(new List<WriteValue>()
+            {
+                new WriteValue()
+                {
+                    NodeId = new NodeId(id, m_NameSpaceIndex),
+                    AttributeId = Attributes.Value,
+                    Value = new DataValue { Value = TypeUtils.Cast(val, BuiltInType.Byte) },
+                }
+            });
         }
     }
 }
