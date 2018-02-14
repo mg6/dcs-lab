@@ -6,6 +6,9 @@
              xmlns:local="clr-namespace:UnifiedAutomation.Sample"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="600">
+    <UserControl.DataContext>
+        <local:AssemblyStationViewModel/>
+    </UserControl.DataContext>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -17,16 +20,16 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <CheckBox x:Name="InputCheckbox" Content="ST__INPUT" Margin="10,10,10,0" VerticalAlignment="Top" Height="18"/>
-        <CheckBox x:Name="OutputCheckbox" Content="ST__OUTPUT" Grid.Column="1" Margin="10,10,10,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="CounterTextBox" Grid.Column="2" Height="24" Margin="68,10,10,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top"/>
+        <CheckBox x:Name="InputCheckbox" Content="ST__INPUT" Margin="10,10,10,0" VerticalAlignment="Top" Height="18" IsChecked="{Binding StInput}"/>
+        <CheckBox x:Name="OutputCheckbox" Content="ST__OUTPUT" Grid.Column="1" Margin="10,10,10,0" VerticalAlignment="Top" IsChecked="{Binding StOutput}"/>
+        <TextBox x:Name="CounterTextBox" Grid.Column="2" Height="24" Margin="68,10,10,0" TextWrapping="Wrap" Text="{Binding CurrentCycleTime}" VerticalAlignment="Top"/>
         <Label x:Name="CounterLabel" Content="Counter" Grid.Column="2" HorizontalAlignment="Left" Margin="10,7,0,0" VerticalAlignment="Top"/>
-        <CheckBox x:Name="EmptyCheckbox" Content="EMPTY" Margin="10,10,10,0" Grid.Row="1" VerticalAlignment="Top" IsEnabled="False"/>
-        <CheckBox x:Name="RunCheckbox" Content="RUN" Grid.Column="1" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="1" VerticalAlignment="Top" Width="180" IsEnabled="False"/>
-        <CheckBox x:Name="BlockedCheckbox" Content="BLOCKED" Grid.Column="2" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="1" VerticalAlignment="Top" IsEnabled="False"/>
-        <CheckBox x:Name="AlarmCheckbox" Content="ALARM" Margin="10,10,10,0" Grid.Row="2" VerticalAlignment="Top"/>
-        <CheckBox x:Name="ExcludedCheckbox" Content="EXCLUDED" Grid.Column="1" Margin="10,10,10,0" Grid.Row="2" VerticalAlignment="Top"/>
-        <CheckBox x:Name="TimeoutCheckbox" Content="TIMEOUT" Grid.Column="2" Margin="10,10,10,0" Grid.Row="2" VerticalAlignment="Top" IsEnabled="False"/>
+        <CheckBox x:Name="EmptyCheckbox" Content="EMPTY" Margin="10,10,10,0" Grid.Row="1" VerticalAlignment="Top" IsEnabled="False" IsChecked="{Binding Empty}"/>
+        <CheckBox x:Name="RunCheckbox" Content="RUN" Grid.Column="1" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="1" VerticalAlignment="Top" Width="180" IsEnabled="False" IsChecked="{Binding Run}"/>
+        <CheckBox x:Name="BlockedCheckbox" Content="BLOCKED" Grid.Column="2" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="1" VerticalAlignment="Top" IsEnabled="False"  IsChecked="{Binding Blocked}"/>
+        <CheckBox x:Name="AlarmCheckbox" Content="ALARM" Margin="10,10,10,0" Grid.Row="2" VerticalAlignment="Top" IsChecked="{Binding Alarm}"/>
+        <CheckBox x:Name="ExcludedCheckbox" Content="EXCLUDED" Grid.Column="1" Margin="10,10,10,0" Grid.Row="2" VerticalAlignment="Top" IsChecked="{Binding Excluded}"/>
+        <CheckBox x:Name="TimeoutCheckbox" Content="TIMEOUT" Grid.Column="2" Margin="10,10,10,0" Grid.Row="2" VerticalAlignment="Top" IsEnabled="False" IsChecked="{Binding Timeout}"/>
 
     </Grid>
 </UserControl>
