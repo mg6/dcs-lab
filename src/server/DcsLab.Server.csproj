@@ -48,6 +48,8 @@
     <Reference Include="UnifiedAutomation.UaServer, Version=2.0.0.0, Culture=neutral, PublicKeyToken=90c158e6f23d82c1, processorArchitecture=MSIL" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AssemblyStationViewModel.cs" />
+    <Compile Include="BaseViewModel.cs" />
     <Compile Include="TestServerManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="AssemblyInfo.cs" />
