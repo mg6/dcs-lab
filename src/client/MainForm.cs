@@ -986,6 +986,9 @@ namespace UnifiedAutomation.Sample
 
         public void writeSync(string id, bool val)
         {
+            if (m_session.ConnectionStatus != ServerConnectionStatus.Connected)
+                return;
+
             List<StatusCode> results = m_session.Write(new List<WriteValue>()
             {
                 new WriteValue()
@@ -999,6 +1002,9 @@ namespace UnifiedAutomation.Sample
 
         public void writeSync(string id, byte val)
         {
+            if (m_session.ConnectionStatus != ServerConnectionStatus.Connected)
+                return;
+
             List<StatusCode> results = m_session.Write(new List<WriteValue>()
             {
                 new WriteValue()
